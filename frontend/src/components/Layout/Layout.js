@@ -289,7 +289,7 @@ function Layout(props) {
 
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/individuals/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/individuals/filtering_terms?skip=0&limit=0")
                 console.log(res)
                 if (res.data.response.filteringTerms !== undefined) {
                     setFilteringTerms(res)
@@ -306,7 +306,7 @@ function Layout(props) {
 
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/cohorts/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/cohorts/filtering_terms?skip=0&limit=0")
                 setFilteringTerms(res)
                 setResults(null)
 
@@ -316,7 +316,7 @@ function Layout(props) {
         } else if (props.collection === 'Variant') {
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/g_variants/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/g_variants/filtering_terms?skip=0&limit=0")
                 setFilteringTerms(res)
                 setResults(null)
 
@@ -326,7 +326,7 @@ function Layout(props) {
         } else if (props.collection === 'Analyses') {
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/analyses/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/analyses/filtering_terms?skip=0&limit=0")
                 setFilteringTerms(res)
                 setResults(null)
 
@@ -336,7 +336,7 @@ function Layout(props) {
         } else if (props.collection === 'Runs') {
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/runs/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/runs/filtering_terms?skip=0&limit=0")
                 setFilteringTerms(res)
                 setResults(null)
 
@@ -346,7 +346,7 @@ function Layout(props) {
         } else if (props.collection === 'Biosamples') {
             try {
 
-                let res = await axios.get("https://beacons.bsc.es/beacon-network/v2.0.0/biosamples/filtering_terms")
+                let res = await axios.get("http://localhost:5050/api/biosamples/filtering_terms?skip=0&limit=0")
                 setFilteringTerms(res)
                 setResults(null)
 
@@ -456,7 +456,7 @@ function Layout(props) {
 
                 resultsQEexact.splice(0, resultsQEexact.length)
                 setError(null)
-                const res = await axios.get(`http://goldorak.hesge.ch:8890/catalogue_explorer/HorizontalExpansionOls/?keywords=${qeValue}&ontology=${ontologyValue.toLowerCase()}`)
+                const res = await axios.get(`https://cineca-query-expansion.text-analytics.ch/catalogue_explorer/HorizontalExpansionOls/?keywords=${qeValue}&ontology=${ontologyValue.toLowerCase()}`)
                 console.log(res)
                 let arrayResults = []
                 if (res.data.response.ols[qeValue] !== undefined) {
@@ -488,20 +488,15 @@ function Layout(props) {
                         console.log(element)
                         arrayFilteringTermsQE.forEach(element2 => {
 
-                                if (element.obo_id.toLowerCase().trim() === element2.id.toLowerCase().trim()) {
-                                    setError(null)
-                                    matchesQE.push(element2.id)
-                                    console.log(matchesQE)
-                                    console.log("FOUND A MATCH")
-                                    setShowQEresults(true)
-                                }
-                            
-                        
+                            if (element.obo_id.toLowerCase().trim() === element2.id.toLowerCase().trim()) {
+                                setError(null)
+                                matchesQE.push(element2.id)
+                                console.log(matchesQE)
+                                console.log("FOUND A MATCH")
+                                setShowQEresults(true)
+                            }
+
                         })
-
-
-
-
 
                     })
                 }
@@ -545,7 +540,7 @@ function Layout(props) {
         setShowQEfirstResults(false)
         setShowQEresults(false)
     }
-    
+
     const handleNext = () => {
         setShowQEfirstResults(false)
         setShowQEresults(true)
@@ -584,7 +579,7 @@ function Layout(props) {
         const fetchData = async () => {
 
             try {
-                let res = await axios.get("https://ega-archive.org/test-beacon-apis/cineca/individuals/filtering_terms?skip=0&limit=0")
+                let res = await axios.get("http://localhost:5050/api/individuals/filtering_terms?skip=0&limit=0")
                 if (res !== null) {
                     res.data.response.filteringTerms.forEach(element => {
                         if (element.type !== "custom") {
@@ -696,9 +691,9 @@ function Layout(props) {
                     <a href="https://www.cineca-project.eu/" target="_blank">
                         <img className="cinecaLogo" src="./CINECA_logo.png" alt='cinecaLogo'></img>
                     </a>
-                    {/* <a href="https://elixir-europe.org/" target="_blank">
+                    <a href="https://elixir-europe.org/" target="_blank">
                         <img className="elixirLogo" src="./white-orange-logo.png" alt='elixirLogo'></img>
-                    </a>*/}
+                    </a>
                 </div>
             </div>
 
@@ -720,11 +715,11 @@ function Layout(props) {
                     {expansionSection === false && cohorts === false &&
                         <button onClick={handleQEclick}><h2 className='queryExpansion'>Query expansion</h2></button>}
                 </div>
-                {expansionSection === true && <div>
+                {expansionSection === true && <div className='expansionContainer'>
                     <button onClick={() => setExpansionSection(false)}>
                         <img className="hideQE" src="../hide.png" alt='hideIcon'></img></button>
                     <div>
-                        {showQEresults === false && showQEfirstResults === false &&<div className='qeSection'>
+                        {showQEresults === false && showQEfirstResults === false && <div className='qeSection'>
                             <h2 className='qeSubmitH2'>Horizontal query expansion</h2>
                             <input className="QEinput" type="text" value={qeValue} autoComplete='on' placeholder={"Type ONE keyword (what you want to search): e.g., melanoma"} onChange={(e) => handleQEchanges(e)} aria-label="ID" />
                             <input className="QEinput2" type="text" value={ontologyValue} autoComplete='on' placeholder={"Type the ontologies to include in the search comma-separated: e.g., mondo,ncit"} onChange={(e) => handleOntologyChanges(e)} aria-label="ID" />
@@ -732,22 +727,22 @@ function Layout(props) {
                         </div>}
                         {showQEfirstResults === true && <div className='qeSection'>
                             <h2 className='qeSubmitH2'>Horizontal query expansion</h2>
-                           
+
                             {ontologyValue.includes(',') && <p className='textQE2'>Results found of <b>exactly {qeValue} </b> keyword from <b>{ontologyValue.toUpperCase()}</b> ontologies:</p>}
                             {!ontologyValue.includes(',') && <p className='textQE2'>Results found of <b>exactly {qeValue} </b> keyword from <b>{ontologyValue.toUpperCase()}</b> ontology:</p>}
-                            {resultsQEexact.map((element,index) => {
+                            {resultsQEexact.map((element, index) => {
                                 return (
                                     <div>
                                         <li className="qeListItem" key={index}>{element.obo_id}</li>
                                     </div>
                                 )
                             })}
-                             <button onClick={handleForward} className='forwardButton'>RETURN</button>
+                            <button onClick={handleForward} className='forwardButton'>RETURN</button>
                             <button onClick={handleNext} className='nextButton'>SEARCH IN FILTERING TERMS</button>
                         </div>}
                         {showQEresults === true && showQEfirstResults === false && <div className='qeSection'>
                             <h2 className='qeSubmitH2'>Horizontal query expansion</h2>
-                            {matchesQE.length > 0 && <p className='textQE'>We looked for all the ontology terms derived from the typed keyword <b>"{qeValue}" </b> that are part of the Beacon Network <b>filtering terms</b>. You can select them so that they are automatically copied to your query. Please be aware that if you want to look for individuals <b>with either one ontology or the other </b>you have to do different searches <b>for now.</b> In other words, one ontology term at a time. If you included all ontologies in a unique search you would be looking for individuals with several {qeValue} ontology terms in the same document, which does not makes much sense.</p>}
+                            {matchesQE.length > 0 && <p className='textQE'>We looked for all the ontology terms derived from the typed keyword <b>"{qeValue}" </b> that are part of the Beacon <b>filtering terms</b>. You can select them so that they are automatically copied to your query. Please be aware that if you want to look for individuals <b>with either one ontology or the other </b>you have to do different searches <b>for now.</b> In other words, one ontology term at a time. If you included all ontologies in a unique search you would be looking for individuals with several {qeValue} ontology terms in the same document, which does not makes much sense.</p>}
                             {matchesQE.length === 0 && <h5>Unfortunately the keyword is not among the current filtering terms</h5>}
                             {matchesQE.map((element) => {
                                 return (

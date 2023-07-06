@@ -89,7 +89,7 @@ function VariantsResults(props) {
                     jsonData1 = JSON.stringify(jsonData1)
 
                     const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
-                    const res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/g_variants", jsonData1)
+                    const res = await axios.post("http://localhost:5050/api/g_variants", jsonData1)
                 } else {
                     //   referenceName={referenceName} start={start} end={end} variantType={variantType} alternateBases={alternateBases} referenceBases={referenceBases} aminoacid={aminoacid} geneID={geneID} />
                     //    </div>
@@ -168,7 +168,7 @@ function VariantsResults(props) {
                     jsonData1 = JSON.stringify(jsonData1)
                     console.log(jsonData1)
                     //const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
-                    const res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/g_variants", jsonData1)
+                    const res = await axios.post("http://localhost:5050/api/g_variants", jsonData1)
                     if (res.data.responseSummary.numTotalResults < 1 || res.data.responseSummary.numTotalResults === undefined) {
                         setError("No results. Please check the query and retry")
                         setNumberResults(0)

@@ -12,8 +12,8 @@ import Navbar from '../NavBar/Navbar';
 
 export default function SignInForm() {
 
-    const [userName, setUserName] = useState('dummy_user')
-    const [password, setPassword] = useState('dummy_pw')
+    const [userName, setUserName] = useState('')
+    const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
     const navigate = useNavigate();
@@ -124,8 +124,8 @@ export default function SignInForm() {
                                 id="userName"
                                 className="formFieldInput"
                                 placeholder="Enter your username"
-                                name="userName"
-                                value="dummy_user"
+                                name= "userName"
+                                value= {userName}
                                 onChange={e => { handleChange1(e) }}
                             />
                         </div>
@@ -139,7 +139,7 @@ export default function SignInForm() {
                                 className="formFieldInput"
                                 placeholder="Enter your password"
                                 name="password"
-                                value="dummy_pw"
+                                value={password}
                                 onChange={e => { handleChange2(e) }}
                             />
                         </div>
