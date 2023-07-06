@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Cohorts(props) {
 
-  const API_ENDPOINT = "https://beacons.bsc.es/beacon-network/v2.0.0/cohorts/"
+  const API_ENDPOINT = "http://localhost:5050/api/cohorts"
 
   const [error, setError] = useState(false)
   const navigate = useNavigate();
@@ -165,11 +165,7 @@ function Cohorts(props) {
 
 
   useEffect(() => {
-    console.log(showGraphs)
-
-    console.log(selectedCohorts)
-
-
+   
     const apiCall = async () => {
 
       try {
@@ -434,8 +430,8 @@ function Cohorts(props) {
 
       try {
 
-        let res = await axios.get('https://beacons.bsc.es/beacon-network/v2.0.0/cohorts/')
-
+        let res = await axios.get('http://localhost:5050/api/cohorts')
+        console.log(res)
         res.data.response.collections.forEach(element => {
 
           if (element.name === undefined && element.cohortName !== undefined) {

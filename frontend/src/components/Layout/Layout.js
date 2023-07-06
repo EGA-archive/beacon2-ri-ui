@@ -3,7 +3,7 @@ import '../../App.css';
 import FilteringTermsIndividuals from '../FilteringTerms/FilteringTerms';
 import Cohorts from '../Cohorts/Cohorts';
 
-import ResultsDatasets from '../Datasets/ResultsDatasets';
+import ResultsDatasets from '../Dataset/BeaconInfo';
 import VariantsResults from '../GenomicVariations/VariantsResults';
 
 import Select from 'react-select'

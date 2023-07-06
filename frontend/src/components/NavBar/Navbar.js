@@ -59,9 +59,9 @@ function Navbar() {
             </nav>
             <nav className='nav3'>
                 <NavLink 
-                    to="/members"
+                    to="/info"
                     className={({ isActive }) => (isActive ? 'Members2' : 'Members')}
-                >Network members</NavLink>
+                >Beacon information</NavLink>
                 {!isLoggedIn &&
                     <NavLink exact
                         to="/sign-in"
