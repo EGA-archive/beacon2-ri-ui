@@ -2,11 +2,11 @@ import './Individuals.css';
 import '../../App.css';
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
 
 import TableResultsIndividuals from '../Results/IndividualsResults/TableResultsIndividuals';
+import { useAuth } from 'oidc-react';
 
 function IndividualsResults(props) {
 
@@ -43,8 +43,6 @@ function IndividualsResults(props) {
 
     const [checked, setChecked] = useState(false)
 
-    const API_ENDPOINT = "http://localhost:5050/api/individuals"
-
     let queryStringTerm = ''
 
     let keyTerm = []
@@ -52,32 +50,32 @@ function IndividualsResults(props) {
     let obj = {}
     let res = ""
 
+    const auth = useAuth();
+    const isAuthenticated = auth.userData?.id_token ? true : false;
+    console.log(isAuthenticated)
 
     useEffect(() => {
         console.log(props.query)
 
         const apiCall = async () => {
+            console.log(isAuthenticated)
 
-            authenticateUser()
-            const token = getStoredToken()
-          
-            if (token !== 'undefined') {
 
+            //authenticateUser()
+
+            if (isAuthenticated) {
+                
                 setLoginRequired(false)
             } else {
-                setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")
-           
-            }
-
-            if (token === null) {
                 setLoginRequired(true)
                 setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")
+                console.log("ERROR")
             }
 
             if (props.query !== null) {
 
                 if (props.query.includes(',')) {
-                    console.log("holi")
+                   
                     queryStringTerm = props.query.split(',')
                     console.log(queryStringTerm)
                     queryStringTerm.forEach((element, index) => {
@@ -153,12 +151,31 @@ function IndividualsResults(props) {
                         }
                         arrayFilter.push(filter)
                     }
+
+
                 }
+
 
             }
 
             try {
-            
+                console.log(props.operator)
+                if (props.value !== '' && props.operator !== '' && props.ID !== '') {
+
+                    console.log("holiii")
+                    //alphanumerical query
+
+                    const alphaNumFilter = {
+                        "id": `${props.ID}`,
+                        "operator": `${props.operator}`,
+                        "value": `${props.value}`,
+                    }
+
+                    arrayFilter.push(alphaNumFilter)
+
+
+                }
+
                 if (props.query === null) {
 
                     // show all individuals
@@ -182,8 +199,9 @@ function IndividualsResults(props) {
                     jsonData1 = JSON.stringify(jsonData1)
                     console.log(jsonData1)
 
-                    const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
-
+                    
+                    //   const headers = { 'Content-type': 'application/json', "Access-Control-Allow-Origin": "*" }
+                    //res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/individuals/", jsonData1, { headers: headers })
                     res = await axios.post("http://localhost:5050/api/individuals", jsonData1)
 
                     // res = await axios.post("http://localhost:5050/api/individuals", jsonData1, { headers: headers })
@@ -236,7 +254,13 @@ function IndividualsResults(props) {
                     jsonData2 = JSON.stringify(jsonData2)
                     console.log(jsonData2)
 
-                    res = await axios.post("http://localhost:5050/api/individuals", jsonData2)
+
+                    const token = auth.userData.access_token
+                    console.log(token)
+                    const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}`} 
+
+                    res = await axios.post("http://localhost:5050/api/individuals", jsonData2, { headers: headers })
+                    //res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/individuals", jsonData2)
                     console.log(res)
                     setTimeOut(true)
 
@@ -341,7 +365,7 @@ function IndividualsResults(props) {
                         <div className='resultsContainer'>
 
                             {show1 && boolean && <p className='p1'>YES</p>}
-                            {show1 && !boolean && <p className='p1'>NO</p>}
+                            {show1 && !boolean && <p className='p1'>N0</p>}
 
                             {show2 && numberResults !== 1 && <p className='p1'>{numberResults} &nbsp; Results</p>}
                             {show2 && numberResults === 1 && <p className='p1'>{numberResults} &nbsp; Result</p>}
