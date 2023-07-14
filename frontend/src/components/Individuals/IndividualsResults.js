@@ -36,9 +36,6 @@ function IndividualsResults(props) {
 
     let queryStringTerm = ''
 
-    let keyTerm = []
-    let resultsAux = []
-    let obj = {}
     let res = ""
 
     const auth = useAuth();
@@ -50,8 +47,6 @@ function IndividualsResults(props) {
 
         const apiCall = async () => {
             console.log(isAuthenticated)
-
-            //authenticateUser()
 
             if (isAuthenticated) {
                 
@@ -278,10 +273,7 @@ function IndividualsResults(props) {
                                 console.log(results)
                             }
 
-
-
                         })
-
 
                     }
                 }
