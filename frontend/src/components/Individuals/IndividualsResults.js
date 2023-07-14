@@ -2,9 +2,6 @@ import './Individuals.css';
 import '../../App.css';
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import { AuthContext } from '../context/AuthContext';
-import { useContext } from 'react';
-
 import TableResultsIndividuals from '../Results/IndividualsResults/TableResultsIndividuals';
 import { useAuth } from 'oidc-react';
 
@@ -15,16 +12,14 @@ function IndividualsResults(props) {
     const [beaconId, setBeaconId] = useState('')
 
     const [error, setError] = useState(false)
-    const [response, setResponse] = useState(null)
+
     const [numberResults, setNumberResults] = useState(0)
     const [boolean, setBoolean] = useState(false)
     const [results, setResults] = useState([])
     const [show1, setShow1] = useState(false)
     const [show2, setShow2] = useState(false)
     const [show3, setShow3] = useState(false)
-    const [label, setLabel] = useState([])
-    const [ident, setId] = useState([])
-    const [operator, setOperator] = useState([])
+
     const [timeOut, setTimeOut] = useState(false)
 
     const [logInRequired, setLoginRequired] = useState(true)
@@ -36,12 +31,8 @@ function IndividualsResults(props) {
     const [skipTrigger, setSkipTrigger] = useState(0)
     const [limitTrigger, setLimitTrigger] = useState(0)
 
-    const { getStoredToken, authenticateUser } = useContext(AuthContext);
-
     const [queryArray, setQueryArray] = useState([])
     const [arrayFilter, setArrayFilter] = useState([])
-
-    const [checked, setChecked] = useState(false)
 
     let queryStringTerm = ''
 
@@ -60,16 +51,16 @@ function IndividualsResults(props) {
         const apiCall = async () => {
             console.log(isAuthenticated)
 
-
             //authenticateUser()
 
             if (isAuthenticated) {
                 
                 setLoginRequired(false)
             } else {
-                setLoginRequired(true)
-                setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")
-                console.log("ERROR")
+                //login desactivated
+               // setLoginRequired(true)
+                setLoginRequired(false)
+                //setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")     
             }
 
             if (props.query !== null) {
@@ -255,12 +246,12 @@ function IndividualsResults(props) {
                     console.log(jsonData2)
 
 
-                    const token = auth.userData.access_token
-                    console.log(token)
-                    const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}`} 
+                   // const token = auth.userData.access_token
+                   // console.log(token)
+                   // const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}`} 
 
-                    res = await axios.post("http://localhost:5050/api/individuals", jsonData2, { headers: headers })
-                    //res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/individuals", jsonData2)
+                    //res = await axios.post("http://localhost:5050/api/individuals", jsonData2, { headers: headers })
+                    res = await axios.post("http://localhost:5050/api/individuals", jsonData2)
                     console.log(res)
                     setTimeOut(true)
 
