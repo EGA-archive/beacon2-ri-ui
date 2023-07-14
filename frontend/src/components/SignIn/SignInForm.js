@@ -1,19 +1,9 @@
 import './SignInForm.css'
-import React, { Component, useState, useEffect } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoggedIn from './LoggedIn';
-import { AuthProvider, useAuth } from 'oidc-react';
 
+import LoggedIn from './LoggedIn';
+import { useAuth } from 'oidc-react';
 
 export default function SignInForm() {
-
-    const [userName, setUserName] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-
-    const navigate = useNavigate();
 
 
     const auth = useAuth();
