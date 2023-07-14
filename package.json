@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "oidc-client-ts": "^2.2.4"
+  }
+}

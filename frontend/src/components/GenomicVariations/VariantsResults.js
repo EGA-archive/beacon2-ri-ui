@@ -3,16 +3,14 @@ import '../Individuals/Individuals.css';
 import '../../App.css';
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
-import { AuthContext } from '../context/AuthContext';
-import { useContext } from 'react';
+import { useAuth } from 'oidc-react';
 
 import TableResultsVariant from '../Results/VariantResults/TableResultsVariant';
 
 function VariantsResults(props) {
 
     const [error, setError] = useState('')
-    const { getStoredToken, authenticateUser } = useContext(AuthContext);
+
     const [logInRequired, setLoginRequired] = useState(true)
     const [messageLogin, setMessageLogin] = useState('')
     const [results, setResults] = useState([])
@@ -42,26 +40,23 @@ function VariantsResults(props) {
         setShow2(false)
     }
 
+    const auth = useAuth();
+    const isAuthenticated = auth.userData?.id_token ? true : false;
+   
+
     useEffect(() => {
         console.log(props.query)
 
         const apiCall = async () => {
 
-            authenticateUser()
-            const token = getStoredToken()
-            console.log(token)
-            if (token !== 'undefined') {
-
+            if (isAuthenticated) {
+                
                 setLoginRequired(false)
             } else {
-                setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")
-                console.log("ERROR")
-            }
-
-            if (token === null) {
-                setLoginRequired(true)
-                setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")
-                console.log("ERROR")
+                //login desactivated
+               // setLoginRequired(true)
+                setLoginRequired(false)
+                //setMessageLogin("PLEASE CREATE AN ACCOUNT AND LOG IN FOR QUERYING")     
             }
 
             try {
@@ -88,7 +83,7 @@ function VariantsResults(props) {
                     }
                     jsonData1 = JSON.stringify(jsonData1)
 
-                    const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
+                   // const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
                     const res = await axios.post("http://localhost:5050/api/g_variants", jsonData1)
                 } else {
                     //   referenceName={referenceName} start={start} end={end} variantType={variantType} alternateBases={alternateBases} referenceBases={referenceBases} aminoacid={aminoacid} geneID={geneID} />
