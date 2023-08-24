@@ -15,7 +15,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_BASE_URL=http://localhost:8003
     ports:
-      - 3001:3000
+      - 3000:3000
     stdin_open: true
     volumes:
       - ./frontend:/usr/src/app
