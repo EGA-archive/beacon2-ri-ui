@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import TableResultsIndividuals from '../Results/IndividualsResults/TableResultsIndividuals';
 import { useAuth } from 'oidc-react';
+import configData from "../../config.json";
 
 function IndividualsResults(props) {
 
@@ -188,7 +189,7 @@ function IndividualsResults(props) {
                     
                     //   const headers = { 'Content-type': 'application/json', "Access-Control-Allow-Origin": "*" }
                     //res = await axios.post("https://beacons.bsc.es/beacon-network/v2.0.0/individuals/", jsonData1, { headers: headers })
-                    res = await axios.post("http://localhost:5050/api/individuals", jsonData1)
+                    res = await axios.post(configData.API_URL + "/api/individuals", jsonData1)
 
                     // res = await axios.post("http://localhost:5050/api/individuals", jsonData1, { headers: headers })
                     console.log(res)
@@ -246,7 +247,7 @@ function IndividualsResults(props) {
                    // const headers = { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}`} 
 
                     //res = await axios.post("http://localhost:5050/api/individuals", jsonData2, { headers: headers })
-                    res = await axios.post("http://localhost:5050/api/individuals", jsonData2)
+                    res = await axios.post(configData.API_URL + "/api/individuals", jsonData2)
                     console.log(res)
                     setTimeOut(true)
 

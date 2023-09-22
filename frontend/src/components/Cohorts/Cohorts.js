@@ -4,10 +4,11 @@ import axios from "axios";
 import { useState, useEffect } from 'react';
 import Layout from '../Layout/Layout';
 import { useNavigate } from 'react-router-dom';
+import configData from "../../config.json";
 
 function Cohorts(props) {
 
-  const API_ENDPOINT = "http://localhost:5050/api/cohorts"
+  const API_ENDPOINT = configData.API_URL + "/api/cohorts"
 
   const [error, setError] = useState(false)
   const navigate = useNavigate();
@@ -430,7 +431,7 @@ function Cohorts(props) {
 
       try {
 
-        let res = await axios.get('http://localhost:5050/api/cohorts')
+        let res = await axios.get(configData.API_URL + '/api/cohorts')
         console.log(res)
         res.data.response.collections.forEach(element => {
 

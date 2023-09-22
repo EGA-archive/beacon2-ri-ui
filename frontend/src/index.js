@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProviderWrapper } from './components/context/AuthContext';
 import { AuthProvider } from 'oidc-react';
+import configData from "./config.json";
 
 console.log(process.env.REACT_APP_CLIENT_SECRET)
 
@@ -25,7 +26,7 @@ const oidcConfig = {
   automaticSilentRenew: true,
   redirectUri:
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000/'
+      ? configData.REDIRECT_URL
       : 'https://cobraz.github.io/example-oidc-react',
   scope: 'openid profile email ga4gh_passport_v1 offline_access',
   revokeAccessTokenOnSignout: true

@@ -1,0 +1,4 @@
+{
+    "API_URL": "http://localhost:5050",
+    "REDIRECT_URL": "http://localhost:3000/"
+  }
