@@ -1,8 +1,7 @@
 import './Individuals.css';
 import '../../App.css';
 
-
-import Layout from '../Layout/Layout';
+import Layout from '../Layout/Layout2';
 
 function Individuals(props) {
 
