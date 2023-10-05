@@ -2,6 +2,7 @@
 import './BeaconInfo.css'
 import axios from "axios";
 import { useState, useEffect } from 'react';
+import configData from '../../config.json'
 
 function BeaconInfo(props) {
 
@@ -15,7 +16,7 @@ function BeaconInfo(props) {
         const apiCall = async () => {
 
             try {
-                let res = await axios.get('http://localhost:5050/api/info')
+                let res = await axios.get(configData.API_URL + '/info')
                 resp.push(res.data)
                 console.log(resp)
                 setTrigger(true)

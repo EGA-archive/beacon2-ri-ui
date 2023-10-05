@@ -28,7 +28,7 @@ function Verifier () {
     e.preventDefault()
     try {
       let res = await axios.get(
-        configData.API_URL + `/validate?endpoint=${verifierUrl}`
+        `https://beacons.bsc.es/beacon-network/v2.0.0/validate?endpoint=${verifierUrl}`
       )
       console.log(res)
       let stringData = ''

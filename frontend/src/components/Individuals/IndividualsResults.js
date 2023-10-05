@@ -41,23 +41,21 @@ function IndividualsResults (props) {
   let queryStringTerm = ''
 
   let res = ''
-  let isAuthenticated = false
 
   const auth = useAuth()
-
-  isAuthenticated = auth.userData?.id_token ? true : false
-
-  authenticateUser()
-  const token = getStoredToken()
-
-  if (token !== 'undefined') {
-    isAuthenticated = true
-  }
+  let isAuthenticated = auth.userData?.id_token ? true : false
 
   useEffect(() => {
-    console.log(props.query)
-
     const apiCall = async () => {
+      if (isAuthenticated === false) {
+        authenticateUser()
+        const token = getStoredToken()
+
+        if (token !== 'undefined' && token !== null) {
+          isAuthenticated = true
+        }
+      }
+
       if (isAuthenticated) {
         setLoginRequired(false)
       } else {
@@ -154,12 +152,10 @@ function IndividualsResults (props) {
       try {
         let res = await axios.get(configData.API_URL + '/info')
 
-        res.data.responses.forEach(element => {
-          beaconsList.push(element)
-        })
+        beaconsList.push(res.data)
 
         beaconsList.reverse()
-
+        console.log(beaconsList)
         if (props.query === null) {
           // show all individuals
 
@@ -201,7 +197,7 @@ function IndividualsResults (props) {
                 res.data.response.resultSets[index].results.forEach(
                   (element2, index2) => {
                     let arrayResult = [
-                      res.data.response.resultSets[index].beaconId,
+                      res.data.meta.beaconId,
                       res.data.response.resultSets[index].results[index2]
                     ]
                     results.push(arrayResult)
@@ -260,11 +256,12 @@ function IndividualsResults (props) {
                 res.data.response.resultSets[index].results.forEach(
                   (element2, index2) => {
                     let arrayResult = [
-                      res.data.response.resultSets[index].beaconId,
+                      res.data.meta.beaconId,
                       res.data.response.resultSets[index].results[index2]
                     ]
                     results.push(arrayResult)
                     console.log(arrayResult)
+                    console.log(results)
                   }
                 )
 

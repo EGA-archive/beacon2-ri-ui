@@ -226,6 +226,17 @@ function FilteringTerms (props) {
             if (returnedPosts.length > 0) {
               return returnedPosts
             }
+          } else if (post.scope !== undefined) {
+            var returnedPosts = []
+              if (
+                post.scope.toLowerCase().includes(e.target.value.toLowerCase())
+              ) {
+                returnedPosts.push(post)
+              }
+            
+            if (returnedPosts.length > 0) {
+              return returnedPosts
+            }
           }
         }
       }
@@ -475,14 +486,16 @@ function FilteringTerms (props) {
                             <td className='th1'>-</td>
                           )}
 
-                          <td className='th1'>{term.type}</td>
+                          <td className='th3'>{term.type}</td>
 
                           <td className='th1'>
-                            {term.scopes.map((term2, index) => {
-                              return index < term.scopes.length - 1
-                                ? term2 + '' + ','
-                                : term2 + ''
-                            })}
+                            {term.scopes !== undefined &&
+                              term.scopes.map((term2, index) => {
+                                return index < term.scopes.length - 1
+                                  ? term2 + '' + ','
+                                  : term2 + ''
+                              })}
+                            {term.scopes === undefined && term.scope}
                           </td>
                         </tr>
                       )}
@@ -522,14 +535,16 @@ function FilteringTerms (props) {
                             <td className='th1'>-</td>
                           )}
 
-                          <td className='th1'>{term.type}</td>
+                          <td className='th3'>{term.type}</td>
 
                           <td className='th1'>
-                            {term.scopes.map((term2, index) => {
-                              return index < term.scopes.length - 1
-                                ? term2 + '' + ','
-                                : term2 + ''
-                            })}
+                            {term.scopes !== undefined &&
+                              term.scopes.map((term2, index) => {
+                                return index < term.scopes.length - 1
+                                  ? term2 + '' + ','
+                                  : term2 + ''
+                              })}
+                            {term.scopes === undefined && term.scope}
                           </td>
                         </tr>
                       )}
@@ -651,7 +666,6 @@ function FilteringTerms (props) {
                           </tr>
                         )}
                     </tbody>
-                    
                   </>
                 )
               })}

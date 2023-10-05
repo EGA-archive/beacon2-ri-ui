@@ -185,7 +185,7 @@ function Layout (props) {
     if (props.collection === 'Individuals') {
       try {
         let res = await axios.get(
-          configData.API_URL + '/individuals/filtering_terms'
+          configData.API_URL + '/individuals/filtering_terms?skip=0&limit=0'
         )
         setTimeOut(true)
         console.log(res)
@@ -201,7 +201,7 @@ function Layout (props) {
     } else if (props.collection === 'Cohorts') {
       try {
         let res = await axios.get(
-          configData.API_URL + '/cohorts/filtering_terms'
+          configData.API_URL + '/cohorts/filtering_terms?skip=0&limit=0'
         )
         setTimeOut(true)
         if (res.data.response.filteringTerms !== undefined) {
@@ -216,7 +216,7 @@ function Layout (props) {
     } else if (props.collection === 'Variant') {
       try {
         let res = await axios.get(
-          configData.API_URL + '/g_variants/filtering_terms'
+          configData.API_URL + '/g_variants/filtering_terms?skip=0&limit=0'
         )
         setTimeOut(true)
         if (res.data.response.filteringTerms !== undefined) {
@@ -232,7 +232,7 @@ function Layout (props) {
     } else if (props.collection === 'Analyses') {
       try {
         let res = await axios.get(
-          configData.API_URL + '/analyses/filtering_terms'
+          configData.API_URL + '/analyses/filtering_terms?skip=0&limit=0'
         )
         setTimeOut(true)
         if (res.data.response.filteringTerms !== undefined) {
@@ -246,7 +246,7 @@ function Layout (props) {
       }
     } else if (props.collection === 'Runs') {
       try {
-        let res = await axios.get(configData.API_URL + '/runs/filtering_terms')
+        let res = await axios.get(configData.API_URL + '/runs/filtering_terms?skip=0&limit=0')
         setTimeOut(true)
         if (res.data.response.filteringTerms !== undefined) {
           setFilteringTerms(res)
@@ -260,7 +260,7 @@ function Layout (props) {
     } else if (props.collection === 'Biosamples') {
       try {
         let res = await axios.get(
-          configData.API_URL + '/biosamples/filtering_terms'
+          configData.API_URL + '/biosamples/filtering_terms?skip=0&limit=0'
         )
         setTimeOut(true)
         if (res.data.response.filteringTerms !== undefined) {
