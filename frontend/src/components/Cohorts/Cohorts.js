@@ -627,7 +627,7 @@ function Cohorts (props) {
       })
 
       setTrigger(true)
-      console.log(filterDisEth)
+ 
     }
 
     if (selectedCohorts.length > 0) {

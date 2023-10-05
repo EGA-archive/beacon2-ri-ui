@@ -21,7 +21,7 @@
   padding-left: 10px;
 }
 
-.chartModule{
+.chartModule {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -40,7 +40,7 @@
 }
 
 .buttonGoBack {
-  margin-top: 87px;
+  margin-top: 63px;
   /* display: flex; */
   align-content: center;
   justify-content: center;
@@ -51,7 +51,7 @@
   border-radius: 3px;
 }
 
-.buttonGoBack:hover{
+.buttonGoBack:hover {
   background-color: #5be57b;
 }
 
@@ -259,18 +259,18 @@ h12 {
   align-items: center;
   padding-left: 160px;
 }
-.chartModule{
-display: flex;
-flex-direction: column;
-flex-wrap: nowrap;
-align-content: center;
-justify-content: center;
-align-items: center;
+.chartModule {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
-.apexcharts-menu{
-  background-color: #27293d!important;
+.apexcharts-menu {
+  background-color: #27293d !important;
   border: 0px;
-  }
+}
 
 .middle {
   top: 30%;
