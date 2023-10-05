@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react'
 import Layout from '../Layout/Layout'
 import { NavLink, useNavigate } from 'react-router-dom'
 import configData from '../../config.json'
-import CohortsModule from './CohortsModule'
-import { isIS } from '@mui/material/locale'
 
 function Cohorts (props) {
   const API_ENDPOINT = configData.API_URL + '/cohorts'
@@ -57,6 +55,8 @@ function Cohorts (props) {
   const [timeOut, setTimeOut] = useState(false)
 
   const [triggerLayout, setTriggerLayout] = useState(false)
+
+  const [trigger, setTrigger] = useState(false)
 
   const handleSelectedFilter = e => {
     setSelectedFilter(e.target.value)
@@ -147,7 +147,42 @@ function Cohorts (props) {
     if (values.length > 0 && labels.length > 0) {
       var options = {
         chart: {
-          type: 'pie'
+          type: 'pie',
+          selection: {
+            enabled: true
+          },
+          toolbar: {
+            show: true,
+            offsetX: 0,
+            offsetY: 0,
+            tools: {
+              download: true,
+              selection: true,
+              zoom: true,
+              zoomin: true,
+              zoomout: true,
+              pan: true,
+              reset: true | '<img src="/static/icons/reset.png" width="20">',
+              customIcons: []
+            },
+            export: {
+              csv: {
+                filename: undefined,
+                columnDelimiter: ',',
+                headerCategory: 'category',
+                headerValue: 'value',
+                dateFormatter (timestamp) {
+                  return new Date(timestamp).toDateString()
+                }
+              },
+              svg: {
+                filename: undefined
+              },
+              png: {
+                filename: undefined
+              }
+            }
+          }
         },
         title: {
           text: valueToFilter
@@ -308,293 +343,297 @@ function Cohorts (props) {
               console.log(element.collectionEvents.length)
               console.log(element.collectionEvents)
               element.collectionEvents.forEach(element3 => {
+                if (Object.keys(element2).length !== 0) {
+                  console.log(element2)
+                  let sexs = ''
+                  let ethnicities = ''
+                  let geoData = ''
+                  let diseasesData = ''
+                  let diseases_eth = ''
+                  let diseases_sex = ''
+                  let ethnicities_dis = ''
+                  let ethnicities_sex = ''
+                  let valuesSex = ''
+                  let labelsSex = ''
+                  let valuesEthnicities = ''
+                  let labelsEthnicities = ''
+                  let valuesGeo = ''
+                  let labelsGeo = ''
+                  let entriesGeo = ''
+                  let valuesDiseases = ''
+                  let labelsDiseases = ''
 
-              if (Object.keys(element2).length !== 0) {
-                console.log(element2)
-                let sexs = ''
-                let ethnicities = ''
-                let geoData = ''
-                let diseasesData = ''
-                let diseases_eth = ''
-                let diseases_sex = ''
-                let ethnicities_dis = ''
-                let ethnicities_sex = ''
-                let valuesSex = ''
-                let labelsSex = ''
-                let valuesEthnicities = ''
-                let labelsEthnicities = ''
-                let valuesGeo = ''
-                let labelsGeo = ''
-                let entriesGeo = ''
-                let valuesDiseases = ''
-                let labelsDiseases = ''
-                
-                console.log(element)
-                console.log(element3.eventGenders)
-                // for (var i = 0; i < res.data.response.collections.length; i++) {
-                if (element3.eventGenders !== undefined) {
-                  sexs = element3.eventGenders.distribution.genders
-                  console.log(sexs)
-                  setDataAvailable(true)
-                }
-                if (element3.eventEthnicities !== undefined) {
-                  ethnicities =
-                  element3.eventEthnicities.distribution.ethnicities
-                  setDataAvailable(true)
-                }
-                if (element3.eventLocations !== undefined) {
-                  geoData = element3.eventLocations.distribution.locations
-                  setDataAvailable(true)
-                }
-                if (element3.eventDiseases !== undefined) {
-                  diseasesData = element3.eventDiseases.distribution.diseases
-                  diseases_eth =
-                  element3.eventDiseases.distribution.diseases_ethnicity
-                  diseases_sex =
-                  element3.eventDiseases.distribution.diseases_sex
-                  setDataAvailable(true)
-                }
-
-                if (diseases_eth !== '') {
-                  setDisEth(diseases_eth)
-                  setFilterDisEth(true)
-                }
-                if (diseases_sex !== '') {
-                  setDisSex(diseases_sex)
-                  setFilterDisSex(true)
-                }
-
-                if (element3.eventEthnicities !== undefined) {
-                  ethnicities_dis =
-                  element3.eventEthnicities.distribution.ethnicities_disease
-                  ethnicities_sex =
-                  element3.eventEthnicities.distribution.ethnicities_sex
-                  setDataAvailable(true)
-                }
-
-                if (ethnicities_dis !== '') {
-                  setEthDis(ethnicities_dis)
-                  setFilterEthDis(true)
-                }
-                if (ethnicities_sex !== '') {
-                  setEthSex(ethnicities_sex)
-                  setFilterEthSex(true)
-                }
-
-                setNameCohort(element.name)
-
-                if (sexs !== '') {
-                  console.log(sexs)
-                  console.log(valuesSex)
-                  valuesSex = Object.values(sexs)
-                  labelsSex = Object.keys(sexs)
-                }
-
-                if (ethnicities !== '') {
-                  valuesEthnicities = Object.values(ethnicities)
-                  labelsEthnicities = Object.keys(ethnicities)
-                }
-
-                if (labelsEthnicities !== '') {
-                  setLabelsEthnicities(labelsEthnicities)
-                }
-
-                if (geoData !== '') {
-                  valuesGeo = Object.values(geoData)
-                  labelsGeo = Object.keys(geoData)
-                  entriesGeo = Object.entries(geoData)
-                }
-
-                if (diseasesData !== '') {
-                  valuesDiseases = Object.values(diseasesData)
-                  labelsDiseases = Object.keys(diseasesData)
-                }
-
-                if (labelsDiseases !== '') {
-                  setLabelsDiseases(labelsDiseases)
-                }
-
-                if (valuesSex !== '' && labelsSex !== '') {
-                  var optionsSex = {
-                    chart: {
-                      type: 'donut'
-                    },
-                    title: {
-                      text: 'Sex'
-                    },
-                    series: valuesSex,
-                    labels: labelsSex
+                  console.log(element)
+                  console.log(element3.eventGenders)
+                  // for (var i = 0; i < res.data.response.collections.length; i++) {
+                  if (element3.eventGenders !== undefined) {
+                    sexs = element3.eventGenders.distribution.genders
+                    console.log(sexs)
+                    setDataAvailable(true)
+                  }
+                  if (element3.eventEthnicities !== undefined) {
+                    ethnicities =
+                      element3.eventEthnicities.distribution.ethnicities
+                    setDataAvailable(true)
+                  }
+                  if (element3.eventLocations !== undefined) {
+                    geoData = element3.eventLocations.distribution.locations
+                    setDataAvailable(true)
+                  }
+                  if (element3.eventDiseases !== undefined) {
+                    diseasesData = element3.eventDiseases.distribution.diseases
+                    diseases_eth =
+                      element3.eventDiseases.distribution.diseases_ethnicity
+                    diseases_sex =
+                      element3.eventDiseases.distribution.diseases_sex
+                    setDataAvailable(true)
                   }
 
-                  var chartSex = new ApexCharts(
-                    document.querySelector('#chartSex'),
-                    optionsSex
-                  )
+                  if (diseases_eth !== '') {
+                    setDisEth(diseases_eth)
+                    setFilterDisEth(true)
+                  }
+                  if (diseases_sex !== '') {
+                    setDisSex(diseases_sex)
+                    setFilterDisSex(true)
+                  }
 
-                  chartSex.render()
-                }
+                  if (element3.eventEthnicities !== undefined) {
+                    ethnicities_dis =
+                      element3.eventEthnicities.distribution.ethnicities_disease
+                    ethnicities_sex =
+                      element3.eventEthnicities.distribution.ethnicities_sex
+                    setDataAvailable(true)
+                  }
 
-                if (valuesEthnicities !== '' && labelsEthnicities !== '') {
-                  var optionsEthnicity = {
-                    chart: {
-                      type: 'bar'
-                    },
-                    title: {
-                      text: 'Ethnicity',
-                      align: 'center',
-                      floating: true
-                    },
-                    series: [
-                      {
-                        name: 'Number of individuals',
-                        data: valuesEthnicities
-                      }
-                    ],
-                    xaxis: {
-                      categories: labelsEthnicities
+                  if (ethnicities_dis !== '') {
+                    setEthDis(ethnicities_dis)
+                    setFilterEthDis(true)
+                  }
+                  if (ethnicities_sex !== '') {
+                    setEthSex(ethnicities_sex)
+                    setFilterEthSex(true)
+                  }
+
+                  setNameCohort(element.name)
+
+                  if (sexs !== '') {
+                    console.log(sexs)
+                    console.log(valuesSex)
+                    valuesSex = Object.values(sexs)
+                    labelsSex = Object.keys(sexs)
+                  }
+
+                  if (ethnicities !== '') {
+                    valuesEthnicities = Object.values(ethnicities)
+                    labelsEthnicities = Object.keys(ethnicities)
+                  }
+
+                  if (labelsEthnicities !== '') {
+                    setLabelsEthnicities(labelsEthnicities)
+                  }
+
+                  if (geoData !== '') {
+                    valuesGeo = Object.values(geoData)
+                    labelsGeo = Object.keys(geoData)
+                    entriesGeo = Object.entries(geoData)
+                  }
+
+                  if (diseasesData !== '') {
+                    valuesDiseases = Object.values(diseasesData)
+                    labelsDiseases = Object.keys(diseasesData)
+                  }
+
+                  if (labelsDiseases !== '') {
+                    setLabelsDiseases(labelsDiseases)
+                  }
+
+                  if (valuesSex !== '' && labelsSex !== '') {
+                    var optionsSex = {
+                      chart: {
+                        type: 'donut'
+                      },
+                      title: {
+                        text: 'Sex'
+                      },
+                      series: valuesSex,
+                      labels: labelsSex
                     }
+
+                    var chartSex = new ApexCharts(
+                      document.querySelector('#chartSex'),
+                      optionsSex
+                    )
+
+                    chartSex.render()
                   }
 
-                  var chartEthnicity = new ApexCharts(
-                    document.querySelector('#chartEthnicity'),
-                    optionsEthnicity
-                  )
-                  chartEthnicity.render()
-                }
-
-                if (valuesGeo !== '' && labelsGeo !== '') {
-                  var optionsGeo = {
-                    chart: {
-                      type: 'pie'
-                    },
-                    title: {
-                      text: 'Geographical origin'
-                    },
-                    series: valuesGeo,
-                    labels: labelsGeo
-                  }
-
-                  var chartGeo = new ApexCharts(
-                    document.querySelector('#chartGeo'),
-                    optionsGeo
-                  )
-                  chartGeo.render()
-                }
-
-                if (valuesDiseases !== '' && labelsDiseases !== '') {
-                  var optionsDiseases = {
-                    series: [
-                      {
-                        data: valuesDiseases
-                      }
-                    ],
-                    chart: {
-                      type: 'bar',
-                      height: 630
-                    },
-                    plotOptions: {
-                      bar: {
-                        barHeight: '100%',
-                        distributed: true,
-                        horizontal: true,
-                        dataLabels: {
-                          position: 'bottom'
+                  if (valuesEthnicities !== '' && labelsEthnicities !== '') {
+                    var optionsEthnicity = {
+                      chart: {
+                        type: 'bar'
+                      },
+                      title: {
+                        text: 'Ethnicity',
+                        align: 'center',
+                        floating: true
+                      },
+                      series: [
+                        {
+                          name: 'Number of individuals',
+                          data: valuesEthnicities
                         }
+                      ],
+                      xaxis: {
+                        categories: labelsEthnicities
                       }
-                    },
-                    colors: [
-                      '#33b2df',
-                      '#546E7A',
-                      '#FFD700',
-                      '#2b908f',
-                      '#DC143C',
-                      '#f48024',
-                      '#69d2e7',
-                      '#13d8aa',
-                      '#A5978B',
-                      '#f9a3a4',
-                      '#FF4500',
-                      '#51f08e',
-                      '#b051f0',
-                      '#CCFF33',
-                      '#FF66CC',
-                      '#FF3333',
-                      '#6633CC',
-                      '#CD853F',
-                      '#3333FF',
-                      '#FF3333'
-                    ],
-                    dataLabels: {
-                      enabled: true,
-                      textAnchor: 'start',
-                      style: {
+                    }
+
+                    var chartEthnicity = new ApexCharts(
+                      document.querySelector('#chartEthnicity'),
+                      optionsEthnicity
+                    )
+                    chartEthnicity.render()
+                  }
+
+                  if (valuesGeo !== '' && labelsGeo !== '') {
+                    var optionsGeo = {
+                      chart: {
+                        type: 'pie'
+                      },
+                      title: {
+                        text: 'Geographical origin'
+                      },
+                      series: valuesGeo,
+                      labels: labelsGeo
+                    }
+
+                    var chartGeo = new ApexCharts(
+                      document.querySelector('#chartGeo'),
+                      optionsGeo
+                    )
+                    chartGeo.render()
+                  }
+
+                  if (valuesDiseases !== '' && labelsDiseases !== '') {
+                    var optionsDiseases = {
+                      series: [
+                        {
+                          data: valuesDiseases
+                        }
+                      ],
+                      chart: {
+                        type: 'bar',
+                        height: 630
+                      },
+                      plotOptions: {
+                        bar: {
+                          barHeight: '100%',
+                          distributed: true,
+                          horizontal: true,
+                          dataLabels: {
+                            position: 'bottom'
+                          }
+                        }
+                      },
+                      colors: [
+                        '#33b2df',
+                        '#546E7A',
+                        '#FFD700',
+                        '#2b908f',
+                        '#DC143C',
+                        '#f48024',
+                        '#69d2e7',
+                        '#13d8aa',
+                        '#A5978B',
+                        '#f9a3a4',
+                        '#FF4500',
+                        '#51f08e',
+                        '#b051f0',
+                        '#CCFF33',
+                        '#FF66CC',
+                        '#FF3333',
+                        '#6633CC',
+                        '#CD853F',
+                        '#3333FF',
+                        '#FF3333'
+                      ],
+                      dataLabels: {
+                        enabled: true,
+                        textAnchor: 'start',
+                        style: {
+                          colors: ['#fff']
+                        },
+                        formatter: function (val, opt) {
+                          return (
+                            opt.w.globals.labels[opt.dataPointIndex] +
+                            ':  ' +
+                            val
+                          )
+                        },
+                        offsetX: 0,
+                        dropShadow: {
+                          enabled: true
+                        }
+                      },
+                      stroke: {
+                        width: 1,
                         colors: ['#fff']
                       },
-                      formatter: function (val, opt) {
-                        return (
-                          opt.w.globals.labels[opt.dataPointIndex] + ':  ' + val
-                        )
+                      xaxis: {
+                        categories: labelsDiseases
                       },
-                      offsetX: 0,
-                      dropShadow: {
-                        enabled: true
-                      }
-                    },
-                    stroke: {
-                      width: 1,
-                      colors: ['#fff']
-                    },
-                    xaxis: {
-                      categories: labelsDiseases
-                    },
-                    yaxis: {
-                      labels: {
-                        show: false
-                      }
-                    },
-                    title: {
-                      text: 'Diseases',
-                      align: 'center',
-                      floating: true
-                    },
-                    tooltip: {
-                      theme: 'dark',
-                      x: {
-                        show: false
+                      yaxis: {
+                        labels: {
+                          show: false
+                        }
                       },
-                      y: {
-                        title: {
-                          formatter: function () {
-                            return ''
+                      title: {
+                        text: 'Diseases',
+                        align: 'center',
+                        floating: true
+                      },
+                      tooltip: {
+                        theme: 'dark',
+                        x: {
+                          show: false
+                        },
+                        y: {
+                          title: {
+                            formatter: function () {
+                              return ''
+                            }
                           }
                         }
                       }
                     }
-                  }
 
-                  var chartDiseases = new ApexCharts(
-                    document.querySelector('#chartDiseases'),
-                    optionsDiseases
-                  )
-                  chartDiseases.render()
+                    var chartDiseases = new ApexCharts(
+                      document.querySelector('#chartDiseases'),
+                      optionsDiseases
+                    )
+                    chartDiseases.render()
+                  }
+                  setTimeOut(true)
+                } else {
+                  console.log('hola')
+                  setTimeOut(true)
+                  setDataAvailable(false)
                 }
-                setTimeOut(true)
-              } else {
-                console.log('hola')
-                setTimeOut(true)
-                setDataAvailable(false)
-              }
-            })
+              })
             }
           }
         })
       })
+
+      setTrigger(true)
+      console.log(filterDisEth)
     }
 
     if (selectedCohorts.length > 0) {
       apiCall()
     }
-  }, [showGraphs])
+  }, [showGraphs, trigger])
 
   return (
     <div className='graphsDiv'>
@@ -629,107 +668,112 @@ function Cohorts (props) {
           RETURN
         </button>
       )}
-      {nameCohort !== '' && <h3>{nameCohort}</h3>}
-      {showGraphs === true && (
-        <div className='chartModule'>
-          <div id='chartSex'></div>
-          <div id='chartGeo'></div>
-          <hr></hr>
-          <div className='ethnicity'>
-            {filterEthSex ||
-              (filterEthDis && (
-                <div className='ethFilters'>
-                  <label for='ethnicities'>Filter:</label>
-                  <select
-                    name='filters'
-                    id='filtersSelect'
-                    onChange={handleSelectedFilter}
-                  >
-                    <option value=''></option>
-                    {filterEthSex && (
-                      <option value='eth_sex'>Ethnicities by sex</option>
-                    )}
-                    {filterEthDis && (
-                      <option value='eth_dis'>Ethnicities by disease</option>
-                    )}
-                  </select>
 
-                  <label for='ethnicities'>Select the ethnicity:</label>
-                  <select
-                    name='ethnicities'
-                    id='ethnicitiesSelect'
-                    onChange={handleSelectedValue}
-                  >
-                    <option value=''></option>
-                    {labelsEthnicities.map(element => {
-                      return <option value={element}>{element}</option>
-                    })}
-                  </select>
-                  <button className='buttonSubmit' onClick={submitFilters}>
-                    Submit
-                  </button>
-                </div>
-              ))}
-            {showEthFiltered && (
-              <div className='moduleFiltered'>
-                <div id='chartFilteredEthnicity'></div>
-              </div>
-            )}
-            {showEthFiltered2 && (
-              <div className='moduleFiltered'>
-                <div id='chartFilteredEthnicity2'></div>
-              </div>
-            )}
-            <div id='chartEthnicity'></div>
-          </div>
-          <hr></hr>
-          <div className='diseases'>
-            {filterDisSex ||
-              (filterDisEth && (
-                <div className='diseasesFilters'>
-                  <label for='ethnicities'>Filter:</label>
-                  <select
-                    name='filters'
-                    id='filtersSelect'
-                    onChange={handleSelectedFilter}
-                  >
-                    <option value=''></option>
-                    {filterDisEth && (
-                      <option value='dis_eth'>Diseases by ethnicity</option>
-                    )}
-                    {filterDisSex && (
-                      <option value='dis_sex'>Diseases by sex</option>
-                    )}
-                  </select>
+      {trigger && (
+        <>
+          {nameCohort !== '' && <h3>{nameCohort}</h3>}
+          {showGraphs === true && (
+            <div className='chartModule'>
+              <div id='chartSex'></div>
+              <div id='chartGeo'></div>
+              <hr></hr>
+              <div className='ethnicity'>
+            
+                    <div className='ethFilters'>
+                      <label for='ethnicities'>Filter:</label>
+                      <select
+                        name='filters'
+                        id='filtersSelect'
+                        onChange={handleSelectedFilter}
+                      >
+                        <option value=''></option>
+                        {filterEthSex && (
+                          <option value='eth_sex'>Ethnicities by sex</option>
+                        )}
+                        {filterEthDis && (
+                          <option value='eth_dis'>
+                            Ethnicities by disease
+                          </option>
+                        )}
+                      </select>
 
-                  <select
-                    name='diseases'
-                    id='diseasesSelect'
-                    onChange={handleSelectedValue}
-                  >
-                    <option value=''></option>
-                    {labelsDiseases.map(element => {
-                      return <option value={element}>{element}</option>
-                    })}
-                  </select>
-                  <button className='buttonSubmit' onClick={submitFilters}>
-                    Submit
-                  </button>
-                </div>
-              ))}
-            {showDisFiltered && (
-              <div className='moduleFiltered'>
-                <div id='chartFilteredDisease'></div>
+                      <label for='ethnicities'>Select the ethnicity:</label>
+                      <select
+                        name='ethnicities'
+                        id='ethnicitiesSelect'
+                        onChange={handleSelectedValue}
+                      >
+                        <option value=''></option>
+                        {labelsEthnicities.map(element => {
+                          return <option value={element}>{element}</option>
+                        })}
+                      </select>
+                      <button className='buttonSubmit' onClick={submitFilters}>
+                        Submit
+                      </button>
+                    </div>
+               
+                {showEthFiltered && (
+                  <div className='moduleFiltered'>
+                    <div id='chartFilteredEthnicity'></div>
+                  </div>
+                )}
+                {showEthFiltered2 && (
+                  <div className='moduleFiltered'>
+                    <div id='chartFilteredEthnicity2'></div>
+                  </div>
+                )}
+                <div id='chartEthnicity'></div>
               </div>
-            )}
-            {showDisFiltered2 && (
-              <div className='moduleFiltered'>
-                <div id='chartFilteredDisease2'></div>
+              <hr></hr>
+              <div className='diseases'>
+              
+                    <div className='diseasesFilters'>
+                      <label for='ethnicities'>Filter:</label>
+                      <select
+                        name='filters'
+                        id='filtersSelect'
+                        onChange={handleSelectedFilter}
+                      >
+                        <option value=''></option>
+                        {filterDisEth && (
+                          <option value='dis_eth'>Diseases by ethnicity</option>
+                        )}
+                        {filterDisSex && (
+                          <option value='dis_sex'>Diseases by sex</option>
+                        )}
+                      </select>
+
+                      <select
+                        name='diseases'
+                        id='diseasesSelect'
+                        onChange={handleSelectedValue}
+                      >
+                        <option value=''></option>
+                        {labelsDiseases.map(element => {
+                          return <option value={element}>{element}</option>
+                        })}
+                      </select>
+                      <button className='buttonSubmit' onClick={submitFilters}>
+                        Submit
+                      </button>
+                    </div>
+            
+                {showDisFiltered && (
+                  <div className='moduleFiltered'>
+                    <div id='chartFilteredDisease'></div>
+                  </div>
+                )}
+                {showDisFiltered2 && (
+                  <div className='moduleFiltered'>
+                    <div id='chartFilteredDisease2'></div>
+                  </div>
+                )}
+                <div id='chartDiseases'></div>
               </div>
-            )}
-            <div id='chartDiseases'></div>
-          </div>
-        </div>
+            </div>
+          )}
+        </>
       )}
       {showGraphs === true && dataAvailable === false && timeOut === true && (
         <div>
