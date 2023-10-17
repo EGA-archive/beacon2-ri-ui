@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProviderWrapper } from './components/context/AuthContext';
 import { AuthProvider } from 'oidc-react';
-import configData from "./config.json";
 
 console.log(process.env.REACT_APP_CLIENT_SECRET)
 
@@ -14,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const oidcConfig = {
   onSignIn: async (user) => {
-    alert('You just signed in, congratz! Check out the console!');
+    alert('You just signed in!');
     console.log(user);
     window.location.hash = '';
   },
@@ -26,8 +25,7 @@ const oidcConfig = {
   automaticSilentRenew: true,
   redirectUri:
     process.env.NODE_ENV === 'development'
-      ? configData.REDIRECT_URL
-      : 'https://cobraz.github.io/example-oidc-react',
+      && 'https://beacon-network-demo.ega-archive.org/',
   scope: 'openid profile email ga4gh_passport_v1 offline_access',
   revokeAccessTokenOnSignout: true
 };

@@ -1,19 +1,15 @@
 import './SignInForm.css'
 import { NavLink } from 'react-router-dom';
-import { Router } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
 import React, { Component, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../NavBar/Navbar';
 
-
-
 export default function SignInFormNoLS() {
 
-    const [userName, setUserName] = useState('')
-    const [password, setPassword] = useState('')
+    const [userName, setUserName] = useState('dummy_user')
+    const [password, setPassword] = useState('dummy_pw')
     const [error, setError] = useState('')
 
     const navigate = useNavigate();
@@ -61,7 +57,7 @@ export default function SignInFormNoLS() {
             formBody = formBody.join("&");
 
 
-            const response = await fetch('http://localhost:8080/auth/realms/Beacon/protocol/openid-connect/token', {
+            const response = await fetch('https://beacon-network-demo2.ega-archive.org/auth/realms/Beacon/protocol/openid-connect/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -86,7 +82,6 @@ export default function SignInFormNoLS() {
             if (readableResponse.access_token) {
                 navigate("/")
                 setIsLoggedIn(true)
-
             } else {
                 setError("User not found. Please check the username and the password and retry")
             }
@@ -124,8 +119,8 @@ export default function SignInFormNoLS() {
                                 id="userName"
                                 className="formFieldInput"
                                 placeholder="Enter your username"
-                                name= "userName"
-                                value= {userName}
+                                name="userName"
+                                value="dummy_user"
                                 onChange={e => { handleChange1(e) }}
                             />
                         </div>
@@ -139,7 +134,7 @@ export default function SignInFormNoLS() {
                                 className="formFieldInput"
                                 placeholder="Enter your password"
                                 name="password"
-                                value={password}
+                                value="dummy_pw"
                                 onChange={e => { handleChange2(e) }}
                             />
                         </div>
