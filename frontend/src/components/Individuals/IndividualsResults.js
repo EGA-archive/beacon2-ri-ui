@@ -372,3 +372,4 @@ function IndividualsResults (props) {
 }
 
 export default IndividualsResults
+

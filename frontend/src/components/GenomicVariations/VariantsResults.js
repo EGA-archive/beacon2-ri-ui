@@ -329,3 +329,4 @@ function VariantsResults (props) {
 }
 
 export default VariantsResults
+
