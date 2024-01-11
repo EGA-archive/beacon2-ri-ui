@@ -329,7 +329,6 @@ function VariantsResults (props) {
           var jsonData1 = {}
           console.log(props.sequenceSubmitted)
           if (props.sequenceSubmitted) {
-            console.log("holi")
             jsonData1 = {
               meta: {
                 apiVersion: '2.0'

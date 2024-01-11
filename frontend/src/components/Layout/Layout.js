@@ -529,7 +529,7 @@ function Layout (props) {
             alt='questionIcon'
           ></img>
         </button>
-        <NavLink className='NavlinkVerifier' exact to='/verifier'>
+        <NavLink className='NavlinkVerifier' exact to='/validator'>
           BEACON VALIDATOR
         </NavLink>
 

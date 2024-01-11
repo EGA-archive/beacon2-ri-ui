@@ -34,7 +34,7 @@ function Validator () {
     try {
       if (verifierUrl !== '') {
         let res = await axios.get(
-          configData.API_URL + `/validate?endpoint=${verifierUrl}`
+          'https://beacon-network-backend-demo.ega-archive.org/beacon-network/v2.0.0' + `/validate?endpoint=${verifierUrl}`
         )
         let stringData = ''
         res.data.forEach(element => {
@@ -80,7 +80,7 @@ function Validator () {
           type='text'
           value={verifierUrl}
           onChange={handleChangeVerifierUrl}
-          placeholder={'https://beacons.bsc.es/beacon/v2.0.0'}
+          placeholder={'https://beacon-apis-demo.ega-archive.org/api'}
         ></input>
         <button className='submitButton' onClick={submitVerifierUrl}>
           SUBMIT
